@@ -1,0 +1,69 @@
+﻿@model IEnumerable<ePayRoll.Models.ProcessedSalary>
+
+<h2>Pay Slip List</h2>
+
+<div class="row">
+    <div class="col-auto">
+        <label>Select Month:</label>
+    </div>
+    <div class="col-auto">
+        <input type="month" id="salaryMonth" class="form-control" value="@DateTime.Now.ToString("yyyy-MM")" />
+    </div>
+    <div class="col-auto">
+        <button id="loadSalariesBtn" class="btn btn-info">Search</button>
+    </div>
+</div>
+
+<table class="table table-bordered mt-3">
+    <thead>
+        <tr>
+            <th>Employee Name</th>
+            <th>Month</th>
+            <th>Basic Salary</th>
+            <th>Allowances</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salary in Model)
+        {
+            <tr>
+                <td>@salary.EmployeeName</td>
+                <td>@salary.MonthYear.ToString("yyyy-MM")</td>
+                <td>@salary.BasicSalary</td>
+                <td>@salary.TotalAllowances</td>
+                <td>@salary.TotalDeductions</td>
+                <td>@salary.TotalSalary</td>
+                <td>
+                    <a href="@Url.Action("GeneratePaySlip", "Payslip", new { payrollId = salary.PayrollId })" class="btn btn-success">
+                        Download PDF
+                    </a>
+                    <button class="btn btn-primary" onclick="viewPaySlip(@salary.PayrollId)">View</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $("#loadSalariesBtn").click(function () {
+            let selectedMonth = $("#salaryMonth").val();
+            if (!selectedMonth) {
+                alert("Please select a valid month.");
+                return;
+            }
+            window.location.href = "@Url.Action("Index", "PaySlip")" + "?selectedMonthYear=" + selectedMonth;
+        });
+    });
+
+    function viewPaySlip(payrollId) {
+        let url = "@Url.Action("ViewPaySlip", "PaySlip")" + "?payrollId=" + payrollId;
+        window.open(url, "_blank");
+    }
+    </script>
+}
+

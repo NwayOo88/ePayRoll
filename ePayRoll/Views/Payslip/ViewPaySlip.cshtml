@@ -1,0 +1,23 @@
+﻿@using Microsoft.Reporting.WebForms
+@{
+    ViewBag.Title = "Pay Slip Report";
+}
+
+<h2>Pay Slip Report</h2>
+
+
+@if (ViewBag.ReportViewer != null)
+{
+    <form id="form1" runat="server">
+        <rsweb:ReportViewer ID="ReportViewer1" runat="server" Width="100%" Height="600px"
+                            ProcessingMode="Local" ShowPrintButton="True">
+            <LocalReport ReportPath="~/Reports/PaySlipReport.rdlc">
+            </LocalReport>
+        </rsweb:ReportViewer>
+    </form>
+}
+else
+{
+    <p>Error: Pay Slip data not found.</p>
+}
+

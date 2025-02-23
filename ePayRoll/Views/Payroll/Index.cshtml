@@ -1,0 +1,142 @@
+﻿@model IEnumerable<ePayRoll.DataAccess.Models.Employee>
+
+<h2>Salary Processing</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="row align-items-center">
+    <div class="col-auto">
+        <label>Select Month:</label>
+    </div>
+    <div class="col-auto">
+        <input type="month" id="salaryMonth" class="form-control" />
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Select</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>Basic Salary</th>
+            <th>Join Date</th>
+            <th>Resign Date</th>
+        </tr>
+    </thead>
+    <tbody id="employeeTable">
+        @foreach (var emp in Model)
+        {
+            <tr>
+                <td><input type="checkbox" class="empCheckbox" value="@emp.Id" /></td>
+                <td>@emp.FullName</td>
+                <td>@emp.DOB.ToShortDateString()</td>
+                <td>@emp.BasicSalary</td>
+                <td>@emp.JoinDate.ToShortDateString()</td>
+                <td>@(emp.ResignDate.HasValue ? emp.ResignDate.Value.ToShortDateString() : "-")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<button id="processSalaryBtn" class="btn btn-success">Process Salary</button>
+<button id="deleteProcessedSalaryBtn" class="btn btn-danger">Delete Processed Salary</button>
+
+@section Scripts{
+    <script>
+    $(document).ready(function () {
+        // Process Salary Button Click
+        $("#processSalaryBtn").click(function () {
+            processSalary();
+        });
+
+        // Delete Processed Salary Button Click
+        $("#deleteProcessedSalaryBtn").click(function () {
+            deleteProcessedSalary();
+        });
+
+        // Function: Selected Employees
+        function getSelectedEmployees() {
+            let selectedEmployees = [];
+            $(".empCheckbox:checked").each(function () {
+                selectedEmployees.push(parseInt($(this).val()));
+            });
+            return selectedEmployees;
+        }
+
+        // Function : Process Salary
+        function processSalary() {
+            let employeeIds = getSelectedEmployees();
+            let monthYear = $("#salaryMonth").val();
+
+            if (employeeIds.length === 0 || monthYear === "") {
+                alert("Please select employees and a valid month.");
+                return;
+            }
+
+            $.ajax({
+                url: "@Url.Action("ProcessSalary", "Payroll")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ employeeIds: employeeIds, monthYear: monthYear }),
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr) {
+                    let errorMessage = xhr.responseText ? xhr.responseText : "Error processing salary.";
+                    alert(errorMessage);
+                }
+            });
+        }
+
+        // Function : Delete Processed Salary
+        function deleteProcessedSalary() {
+            let employeeIds = getSelectedEmployees();
+            let monthYear = $("#salaryMonth").val();
+
+            if (employeeIds.length === 0 || monthYear === "") {
+                alert("Please select employees and a valid month.");
+                return;
+            }
+
+            if (!confirm("Are you sure you want to delete processed salaries for the selected employees?")) {
+                return;
+            }
+
+            $.ajax({
+                url: "@Url.Action("DeleteSalary", "Payroll")",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ employeeIds: employeeIds, monthYear: monthYear }),
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                }, error: function (xhr) {
+                    let errorMessage = xhr.responseText ? xhr.responseText : "Error deleting salary.";
+                    alert(errorMessage);
+                }
+            });
+        }
+
+
+    });
+    </script>
+
+}
+

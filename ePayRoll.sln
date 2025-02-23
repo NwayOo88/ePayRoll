@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePayRoll.Web", "ePayRoll\ePayRoll.Web.csproj", "{97A68D26-ED74-457C-A177-07ECC0F7A789}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePayRoll.API", "ePayRoll.API\ePayRoll.API.csproj", "{AB5FF141-CE6A-4AB9-B7EB-085FA3CD98CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePayRoll.DataAccess", "ePayRoll.DataAccess\ePayRoll.DataAccess.csproj", "{CBB471F2-4EAB-48FC-8C66-81C9EB701871}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97A68D26-ED74-457C-A177-07ECC0F7A789}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97A68D26-ED74-457C-A177-07ECC0F7A789}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97A68D26-ED74-457C-A177-07ECC0F7A789}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97A68D26-ED74-457C-A177-07ECC0F7A789}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5FF141-CE6A-4AB9-B7EB-085FA3CD98CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5FF141-CE6A-4AB9-B7EB-085FA3CD98CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5FF141-CE6A-4AB9-B7EB-085FA3CD98CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5FF141-CE6A-4AB9-B7EB-085FA3CD98CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBB471F2-4EAB-48FC-8C66-81C9EB701871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBB471F2-4EAB-48FC-8C66-81C9EB701871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBB471F2-4EAB-48FC-8C66-81C9EB701871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBB471F2-4EAB-48FC-8C66-81C9EB701871}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46035F38-7390-4E87-A85F-EE174CBABF86}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,104 @@
+﻿@model List<ePayRoll.DataAccess.Models.Employee>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Employee List</h2>
+    <a href="@Url.Action("Detail")" class="btn btn-success">+ Add New Employee</a>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<!-- Filter Form -->
+<form method="get" class="form-inline mb-3">
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text" name="searchName" class="form-control" placeholder="Search by Name" value="@Request.QueryString["searchName"]" />
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="searchDob" class="form-control" value="@Request.QueryString["searchDob"]" />
+        </div>
+        <div class="col-md-3">
+            <select name="filterStatus" class="form-control">
+                <option value="">Filter by Status</option>
+                <option value="Active" @(Request.QueryString["filterStatus"] == "Active" ? "selected" : "")>Active</option>
+                <option value="Resigned" @(Request.QueryString["filterStatus"] == "Resigned" ? "selected" : "")>Resigned</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">Reset</a>
+        </div>
+    </div>
+</form>
+
+<!-- Employee Data Table -->
+<table id="employeeTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</a></th>
+            <th>Date of Birth</a></th>
+            <th>Gender</th>
+            <th>Join Date</th>
+            <th>Resign Date</th>
+            <th>Status</a></th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.FullName</td>
+                <td>@employee.DOB.ToString("yyyy-MM-dd")</td>
+                <td>@employee.Gender</td>
+                <td>@employee.JoinDate.ToString("yyyy-MM-dd")</td>
+                <td>@(employee.ResignDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+                <td>@(employee.ResignDate == null ? "Active" : "Resigned")</td>
+                <td>
+                    <a href="@Url.Action("Detail", new { id = employee.Id })" class="btn btn-info">Edit</a>
+                    <button class="btn btn-danger deleteBtn" data-id="@employee.Id">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#employeeTable").DataTable({
+                "searching": false,
+                "paging": true,
+                "ordering": true,
+                "info": true
+            });
+
+            $(".deleteBtn").click(function () {
+                let empId = $(this).data("id");
+                if (confirm("Are you sure you want to delete this employee?")) {
+                    $.ajax({
+                        url: "@Url.Action("Delete", "Employee")",
+                        type: "POST",
+                        data: { id: empId },
+                        success: function (response) {
+                            if (response.success) {
+                                alert(response.message);
+                                location.reload();
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function () {
+                            alert("Error deleting employee.");
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+}

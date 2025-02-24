@@ -79,18 +79,7 @@ To run both Web UI & API together in Visual Studio:
 6. Click **OK**, then **Run (F5)**.
 ✅ **Now, both projects will start automatically.**
 
-### **6️⃣ Run API & Web Separately (Alternative)**
-If running via CLI:
-- **Start API**:
-```sh
-cd ePayRoll.API
- dotnet run
-```
-- **Start Web UI**:
-```sh
-cd ePayRoll.Web
- dotnet run
-```
+
 
 ---
 ## 📌 API Endpoints
